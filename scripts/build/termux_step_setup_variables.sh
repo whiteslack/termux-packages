@@ -130,7 +130,11 @@ termux_step_setup_variables() {
 	# Set if a host build should be done in TERMUX_PKG_HOSTBUILD_DIR:
 	TERMUX_PKG_HOSTBUILD=false
 	TERMUX_PKG_FORCE_CMAKE=false # if the package has autotools as well as cmake, then set this to prefer cmake
-	TERMUX_CMAKE_BUILD=Ninja # Which cmake generator to use
+	if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
+		TERMUX_CMAKE_BUILD="Unix Makefiles" # Which cmake generator to use
+	else
+		TERMUX_CMAKE_BUILD=Ninja # Which cmake generator to use
+	fi
 	TERMUX_PKG_HAS_DEBUG=true # set to false if debug build doesn't exist or doesn't work, for example for python based packages
 	TERMUX_PKG_METAPACKAGE=false
 	TERMUX_PKG_QUICK_REBUILD=false # set this temporarily when iterating on a large package and you don't want the source and build directories wiped every time you make a mistake
