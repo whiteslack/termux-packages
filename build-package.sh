@@ -22,10 +22,6 @@ if [ "$(uname -o)" = "Android" ] || [ -e "/system/bin/app_process" ]; then
 		exit 1
 	fi
 
-	# termux-build-chroot sets up a new PREFIX with proot to which
-	# the built package can be installed without modifying $PREFIX
-	source "$TERMUX_SCRIPTDIR/scripts/termux-build-chroot.sh"
-
 	# This variable tells all parts of build system that build
 	# is performed on device.
 	export TERMUX_ON_DEVICE_BUILD=true
@@ -391,20 +387,14 @@ while (($# > 0)); do
 		termux_step_make
 		cd "$TERMUX_PKG_BUILDDIR"
 		mkdir -p "$TERMUX_PKG_MASSAGEDIR/data"
+
 		termux_step_make_install
 		cd "$TERMUX_PKG_BUILDDIR"
-		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-			BACKUP_TERMUX_PREFIX=$TERMUX_PREFIX
-			TERMUX_PREFIX=$TERMUX_PKG_MASSAGEDIR/$TERMUX_PREFIX
-			PREFIX=$TERMUX_PKG_MASSAGEDIR/$PREFIX
-		fi
+
 		termux_step_post_make_install
 		termux_step_install_service_scripts
 		termux_step_install_license
-		if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
-			TERMUX_PREFIX=$BACKUP_TERMUX_PREFIX
-			PREFIX=$BACKUP_TERMUX_PREFIX
-		else
+		if [ "$TERMUX_ON_DEVICE_BUILD" = "false" ]; then
 			cd "$TERMUX_PKG_MASSAGEDIR"
 			termux_step_extract_into_massagedir
 		fi
