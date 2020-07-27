@@ -31,10 +31,8 @@ share/man/man7/mdoc.7
 share/man/man1p/getconf.1p"
 
 
-termux_step_pre_configure() {
-	export TERMUX_MAKE_PROCESSES=1
-
+termux_step_make_install() {
 	# Bundle posix man pages in same package:
 	cd man-pages-posix-2013-a
-	make install
+	make DESTDIR=$TERMUX_PKG_MASSAGEDIR install
 }
