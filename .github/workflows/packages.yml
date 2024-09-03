@@ -109,7 +109,7 @@ jobs:
     - name: Clone repository
       uses: actions/checkout@v2
     - name: Get *.deb files
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v4.1.7
       with:
         name: termux-packages
         path: ./
@@ -141,7 +141,7 @@ jobs:
     - name: Clone repository
       uses: actions/checkout@v2
     - name: Get *.deb files
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v4.1.7
       with:
         name: termux-packages
         path: ./
